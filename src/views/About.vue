@@ -1,14 +1,13 @@
 <template>
-   <Navbar></Navbar>
+  
 </template>
 
 <script>
 export default {
-    name: "Home",
-    props: {
-        msg: String
+    name: "About",
+    props:{
+        msg:String
     }
-
 }
 </script>
 

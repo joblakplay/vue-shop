@@ -1,18 +1,19 @@
 <template>
   <div id="app">
-    <Navbar></Navbar>
+   
+    <hello-world></hello-world>
     <router-view/>
   </div>
 </template>
 
 <script>
-//import HelloWorld from './components/HelloWorld.vue'
-import Navbar from './components/Navbar.vue'
+import HelloWorld from './components/HelloWorld.vue'
+//import Navbar from './components/Navbar.vue'
 
 export default {
   name: 'App',
   components: {
-    Navbar
+  HelloWorld
   }
 }
 </script>
