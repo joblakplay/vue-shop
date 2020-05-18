@@ -103,6 +103,11 @@ export default {
             name:null,
             email: null
         }
+    },
+    methods:{
+        closeMenu(){
+            $(".page-wrapper").toggledClass("toggled")
+        }
     }
 }
 </script>
