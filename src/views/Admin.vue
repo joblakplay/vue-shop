@@ -84,7 +84,6 @@
                 </div>
                 <!-- sidebar-menu  -->
             </div>
-       
         </nav>
         <!-- sidebar-content  -->
         <main class="page-content">
@@ -106,7 +105,7 @@ export default {
     },
     methods:{
         closeMenu(){
-            $(".page-wrapper").toggledClass("toggled")
+            //$(".page-wrapper").toggledClass("toggled")
         }
     }
 }
