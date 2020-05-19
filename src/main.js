@@ -11,7 +11,7 @@ import './assets/app.scss'
 
 import router from './router'
 
-//Vue.component('Navbar',require('./components/Navbar.vue').default)
+Vue.component('Navbar',require('./components/Navbar.vue').default)
 
 Vue.config.productionTip = false
 

@@ -8,7 +8,7 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <router-link to="/home" class="nav-link">Home </router-link>
+        <router-link to="/" class="nav-link">Home </router-link>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Link</a>
@@ -29,9 +29,9 @@
 <script>
 export default {
      name: 'Navbar',
-  props: {
-    msg: String
-  }
+     props: {
+      msg: String
+  },components:{}
 }
 </script>
 
