@@ -41,13 +41,12 @@
           >Search</a>
         </form>
       </div>
-      <Login />
+      
     </nav>
   </div>
 </template>
 
 <script>
-import Login from "./Login.vue";
 
 export default {
   name: "Navbar",
@@ -55,7 +54,7 @@ export default {
     msg: String
   },
   components: {
-    Login
+   
   }
 };
 </script>
