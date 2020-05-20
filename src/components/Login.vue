@@ -13,7 +13,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="loginLabel">Modal title</h5>
+            <h5 class="modal-title" id="loginLabel">Login</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
               <span aria-hidden="true">&times;</span>
             </button>
@@ -30,7 +30,18 @@
 </template>
 
 <script>
-export default {};
+
+//import firebase from "../firebase"
+
+export default {
+  name: "Login",
+  props:{
+    msg:String
+  },
+  components:{
+    //firebase
+  }
+};
 </script>
 
 <style>
