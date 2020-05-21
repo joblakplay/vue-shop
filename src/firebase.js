@@ -12,5 +12,8 @@ const firebaseConfig = {
     measurementId: "G-PFQYXBJFB5"
   };
   // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  export const fb = firebase.initializeApp(firebaseConfig);
+  //export default const fs = firebase.initializeApp(firebaseConfig);
   firebase.analytics();
+
+  

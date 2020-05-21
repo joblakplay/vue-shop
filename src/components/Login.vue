@@ -137,12 +137,41 @@
 </template>
 
 <script>
-//import firebase from "../firebase"
+import {fb} from "../firebase"
 
 export default {
   name: "Login",
   props: {
     msg: String
+  },
+  data(){
+    return{
+      name:null,
+      email:null,
+      password:null
+    }
+  },
+  methods:{
+      register(){
+        fb.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .the(()=>{
+          $('#login').modal('hide')
+          this.$router.replace('admin')
+        })
+        .catch(function(error) {
+  // Handle Errors here.
+        var errorCode = error.code;
+        var errorMessage = error.message;
+
+       if (errorCode == 'auth/weak-password') {
+         alert('the passeord to weak')
+       } else {
+         alert(errorMessage)
+       }
+  // ...
+      console.log(error)
+        });
+      }
   },
   components: {
     //firebase
