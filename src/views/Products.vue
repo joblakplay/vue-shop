@@ -35,20 +35,27 @@
       </div>
 
       <h3>Product List</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>price</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr :v-for="product in products">
-            <td>{{product.name}}</td>
-            <td>{{product.price}}</td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Descição</th>
+              <th>Price</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in products" :key="product">
+              <td>{{product.name}}</td>
+              <td>{{product.price}}</td>
+              <td>
+                <button class="btn btn-primary mr-2"><i class="fa fa-pencil"></i></button>
+                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 </template>
@@ -79,8 +86,8 @@ export default {
           console.error("Error adding document: ", error);
         });
     },
-    created() {
-        db.collection("products").get().then(res =>{
+    getAll(){
+      db.collection("products").get().then(res =>{
                res.forEach(product =>{
                     this.products.push(product.data())
                 })
@@ -88,11 +95,11 @@ export default {
     },
     reset() {
       Object.assign(this.$data, this.$options.data.apply(this));
-    },
-    mounted() {
-      this.created();
     }
-  }
+   },
+  mounted() {
+        this.getAll()
+    },
 };
 </script>
 
