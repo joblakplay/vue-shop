@@ -1,68 +1,100 @@
 <template>
   <div class="products">
-      <div class="conteiner h-100">
-          <div class="intro h-100">
-              <div class="row h-100 justify-content-center align-items-center">
-                  <div class="col-md-6 ">
-                     <h1>Products Page</h1>
-                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. </p>
-                  </div>
-                  <div class="col-md-6">
-                      <img src="/img/svg/product.svg" alt="" class="img-fluid" srcset="">
-                  </div>
-              </div>
+    <div class="conteiner h-100">
+      <div class="intro h-100">
+        <div class="row h-100 justify-content-center align-items-center">
+          <div class="col-md-6">
+            <h1>Products Page</h1>
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
           </div>
-          <hr>
-
-            <h3>Basic CRUD</h3>
-
-          <div class="product-test">
-              <div class="form-group">
-                  <input type="text" placeholder="Product Name" v-model="product.name" class="form-control">
-              </div>
-              <div class="form-group">
-                  <input type="text" placeholder="Price" v-model="product.price" class="form-control">
-              </div>
-              <div class="form-group">
-                  <button class="btn btn-primary" @click="saveData"> Save Data</button>
-              </div>
+          <div class="col-md-6">
+            <img src="/img/svg/product.svg" alt class="img-fluid" srcset />
           </div>
+        </div>
       </div>
+      <hr />
+
+      <h3>Basic CRUD</h3>
+
+      <div class="product-test">
+        <div class="form-group">
+          <input type="text" placeholder="Product Name" v-model="product.name" class="form-control" />
+        </div>
+        <div class="form-group">
+          <input
+            type="text"
+            placeholder="Price"
+            @keyup.enter="saveData"
+            v-model="product.price"
+            class="form-control"
+          />
+        </div>
+        <div class="form-group">
+          <button class="btn btn-primary" @click="saveData">Save Data</button>
+        </div>
+      </div>
+
+      <h3>Product List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr :v-for="product in products">
+            <td>{{product.name}}</td>
+            <td>{{product.price}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import {db} from "../firebase"
+import { db } from "../firebase";
 
 export default {
-    name: "Products",
-    props: {
-        msg:String
+  name: "Products",
+  props: {
+    msg: String
+  },
+  data() {
+    return {
+      products: [],
+      product: {
+        name: null,
+        price: null
+      }
+    };
+  },
+  methods: {
+    saveData() {
+      db.collection("products")
+        .add(this.product)
+        .then(this.reset())
+        .catch(function(error) {
+          console.error("Error adding document: ", error);
+        });
     },
-    data(){
-        return{
-            product:{
-              name:null,
-              price:null  
-            }
-        }
-    },
-    methods:{
-        saveData(){
-            db.collection('products').add(this.product)
-            .then(this.reset())
-            .catch(function(error){
-                console.error("Error adding document: ", error)
+    created() {
+        db.collection("products").get().then(res =>{
+               res.forEach(product =>{
+                    this.products.push(product.data())
+                })
             })
-
-        },
-        reset(){
-            Object.assign(this.$data, this.$options.data.apply(this))
-        }
+    },
+    reset() {
+      Object.assign(this.$data, this.$options.data.apply(this));
+    },
+    mounted() {
+      this.created();
     }
-}
+  }
+};
 </script>
 
 <style>
-
 </style>
