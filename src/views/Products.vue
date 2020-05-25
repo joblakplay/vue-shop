@@ -45,12 +45,12 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in products" :key="product">
-              <td>{{product.name}}</td>
-              <td>{{product.price}}</td>
+            <tr v-for="product in products" :key="product.data.id">
+              <td>{{product.data().name}}</td>
+              <td>{{product.data().price}}</td>
               <td>
                 <button class="btn btn-primary mr-2"><i class="fa fa-pencil"></i></button>
-                <button class="btn btn-danger"><i class="fa fa-trash"></i></button>
+                <button @click="deleteProduct(product.id)" class="btn btn-danger"><i class="fa fa-trash"></i></button>
               </td>
             </tr>
           </tbody>
@@ -78,18 +78,31 @@ export default {
     };
   },
   methods: {
+    deleteProduct(doc){
+      
+     if(confirm(doc)){ 
+       db.collection("products").doc(doc).delete().then(function() {
+          console.log("Document successfully deleted!");
+      })
+      .then(this.getAll())
+      .catch(function(error) {
+          console.error("Error removing document: ", error);
+      });}
+    },
     saveData() {
       db.collection("products")
         .add(this.product)
         .then(this.reset())
+        .then(this.getAll())
         .catch(function(error) {
           console.error("Error adding document: ", error);
         });
     },
     getAll(){
+      this.products =[]
       db.collection("products").get().then(res =>{
                res.forEach(product =>{
-                    this.products.push(product.data())
+                    this.products.push(product)
                 })
             })
     },
