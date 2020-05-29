@@ -29,7 +29,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="product in products" :key="product.data().id">
+            <!-- <tr v-for="product in products" :key="product.data().id">
               <td>{{product.data().name}}</td>
               <td>{{product.data().price}}</td>
               <td>
@@ -40,7 +40,7 @@
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
-            </tr>
+            </tr> -->
           </tbody>
         </table>
         </div>
@@ -71,7 +71,7 @@
             </div>
             <div class="col-md-4">
                 <h4 class="display-6">Product Details </h4>
-                <h/>
+                
               <div class="form-group">
                 <input
                   type="text"
@@ -88,19 +88,20 @@
                     class="form-control"
                 />
               </div>
-              <div class="form-group">
+              <div class="form-group d-flex">
                 <input
                     type="text"
                     placeholder="Product Image"
                     v-model="product.image"
                     class="form-control"
                   />
+                 
               </div>
             
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="updateProduct" type="button" class="btn btn-primary">Save changes</button>
+            <button @click="addProduct" type="button" class="btn btn-primary">Save changes</button>
           </div>
           </div>
         </div>
@@ -111,11 +112,15 @@
 
 <script>
 import { db } from "../firebase";
-import jQuery from 'jquery'
-var $ = jQuery
+import { VueEditor } from "vue2-editor";
+import jQuery from 'jquery';
+var $ = jQuery;
 
 export default {
   name: "Products",
+  components:{
+    VueEditor
+  },
   props: {
     msg: String
   },
@@ -132,72 +137,83 @@ export default {
       activeItem: null
     };
   },
+  firestore(){
+    return{
+      products : db.collection('products')
+    }
+  },
   methods: {
+    uploadImage(){
+
+    },
     addNew(){
          $('#product').modal('show')
     },
-    watched(){
-       db.collection('products').onSnapshot(res =>{
-         this.products=[];
-         res.forEach(doc =>{
-           this.products.push(doc);
-         })
-       })
-    },
-    editProduct(product) {
-        $('#product').modal('show');
-        this.product = product.data();
-        this.activeItem = product.id;
+    // watched(){
+    //    db.collection('products').onSnapshot(res =>{
+    //      this.products=[];
+    //      res.forEach(doc =>{
+    //        this.products.push(doc);
+    //      })
+    //    })
+    // },
+    editProduct() {
+        // $('#product').modal('show');
+        // this.product = product.data();
+        // this.activeItem = product.id;
     },
     updateProduct(){
-        db.collection('products').doc(this.activeItem).update(this.product)
-        .then(() => 
-        {
-           $('#product').modal('hide');
-           this.reset();
-           this.watched()}
-        )
-        .catch()
+        // db.collection('products').doc(this.activeItem).update(this.product)
+        // .then(() => 
+        // {
+        //    $('#product').modal('hide');
+        //    this.reset();
+        //    this.watched()}
+        // )
+        // .catch()
     },
-    deleteProduct(doc) {
-      if (confirm(doc)) {
-        db.collection("products")
-          .doc(doc)
-          .delete()
-          .then(function() {
-            console.log("Document successfully deleted!");
-          })
-          .then(()=> this.getAll())
-          .catch(function(error) {
-            console.error("Error removing document: ", error);
-          });
-      }
+    deleteProduct() {
+      // if (confirm(doc)) {
+      //   db.collection("products")
+      //     .doc(doc)
+      //     .delete()
+      //     .then(function() {
+      //       console.log("Document successfully deleted!");
+      //     })
+      //     .then(()=> this.getAll())
+      //     .catch(function(error) {
+      //       console.error("Error removing document: ", error);
+      //     });
+      // }
     },
     saveData() {
-      db.collection("products")
-        .add(this.product)
-        .then(this.reset())
-        .then(() => this.getAll())
-        .catch(function(error) {
-          console.error("Error adding document: ", error);
-        });
+      // db.collection("products")
+      //   .add(this.product)
+      //   .then(this.reset())
+      //   .then(() => this.getAll())
+      //   .catch(function(error) {
+      //     console.error("Error adding document: ", error);
+      //   });
     },
     getAll() {
-      this.products = [];
-      db.collection("products")
-        .get()
-        .then(res => {
-          res.forEach(product => {
-            this.products.push(product);
-          });
-        });
+      // this.products = [];
+      // db.collection("products")
+      //   .get()
+      //   .then(res => {
+      //     res.forEach(product => {
+      //       this.products.push(product);
+      //     });
+      //   });
     },
     reset() {
-      Object.assign(this.$data, this.$options.data.apply(this));
+      // Object.assign(this.$data, this.$options.data.apply(this));
+    },
+    addProduct(){
+      this.$firestore.products.add(this.product)
     }
   },
   mounted() {
-    this.getAll();
+    // this.getAll();
   }
 };
 </script>
