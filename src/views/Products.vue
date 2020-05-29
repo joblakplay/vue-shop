@@ -29,9 +29,9 @@
             </tr>
           </thead>
           <tbody>
-            <!-- <tr v-for="product in products" :key="product.data().id">
-              <td>{{product.data().name}}</td>
-              <td>{{product.data().price}}</td>
+            <tr v-for="product in products" :key="product.id" >
+              <td>{{product.name}}</td>
+              <td>{{product.price}}</td>
               <td>
                 <button @click="editProduct(product)" class="btn btn-primary mr-2">
                   <i class="fa fa-pencil"></i>
@@ -40,7 +40,7 @@
                   <i class="fa fa-trash"></i>
                 </button>
               </td>
-            </tr> -->
+            </tr>
           </tbody>
         </table>
         </div>
@@ -65,11 +65,10 @@
                     </div>
 
                     <div class="form-group">
-                      <vue-editor v-model="product.description"></vue-editor>
+                      <textarea class="form-control" v-model="product.description"></textarea>
                     </div>
                   </div>
-            </div>
-            <div class="col-md-4">
+                    <div class="col-md-4">
                 <h4 class="display-6">Product Details </h4>
                 
               <div class="form-group">
@@ -97,7 +96,7 @@
                   />
                  
               </div>
-            
+            </div>          
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -112,14 +111,14 @@
 
 <script>
 import { db } from "../firebase";
-import { VueEditor } from "vue2-editor";
+//import { VueEditor } from "vue2-editor";
 import jQuery from 'jquery';
 var $ = jQuery;
 
 export default {
   name: "Products",
   components:{
-    VueEditor
+    //VueEditor
   },
   props: {
     msg: String
