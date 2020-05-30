@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <!-- sidebar-menu  -->
-                <div class=" sidebar-item sidebar-menu">
+                <div class=" sidebar-item sidebar-menu ">
                     <ul>
                         <li class="header-menu">
                             <span>Menu</span>
