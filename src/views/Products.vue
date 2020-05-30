@@ -65,7 +65,7 @@
                     </div>
 
                     <div class="form-group">
-                      <textarea class="form-control" v-model="product.description"></textarea>
+                      <vue-editor v-model="product.description"></vue-editor>
                     </div>
                   </div>
                     <div class="col-md-4">
@@ -100,7 +100,8 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="addProduct" type="button" class="btn btn-primary">Save changes</button>
+            <button @click="updateProduct" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
+            <button @click="addProduct" type="button" class="btn btn-success" v-if="modal == 'new'">Save changes</button>
           </div>
           </div>
         </div>
@@ -111,7 +112,7 @@
 
 <script>
 import { db } from "../firebase";
-//import { VueEditor } from "vue2-editor";
+import { VueEditor } from "vue2-editor";
 const Swal = require('sweetalert2')
 const Toast = Swal.mixin({
   toast: true,
@@ -130,7 +131,7 @@ var $ = jQuery;
 export default {
   name: "Products",
   components:{
-    //VueEditor
+    VueEditor
   },
   props: {
     msg: String
@@ -145,6 +146,7 @@ export default {
         tag: null,
         image: null
       },
+      modal:null,
       activeItem: null
     };
   },
@@ -158,6 +160,7 @@ export default {
 
     },
     addNew(){
+        this.modal = 'new'
          $('#product').modal('show')
     },
     // watched(){
@@ -171,15 +174,22 @@ export default {
     editProduct(product) {
         this.modal = 'edit'
         this.product = product
+        
          $('#product').modal('show');
         // this.product = product.data();
         // this.activeItem = product.id;
     },
     updateProduct(){
+
+      this.$firestore.products.doc(this.product.id).update(this.product)
+        Toast.fire({
+            icon: 'success',
+            title: 'Update in successfully'
+              })
         // db.collection('products').doc(this.activeItem).update(this.product)
         // .then(() => 
         // {
-        //    $('#product').modal('hide');
+            $('#product').modal('hide');
         //    this.reset();
         //    this.watched()}
         // )
@@ -201,7 +211,7 @@ export default {
 
             Toast.fire({
             icon: 'success',
-            title: 'Signed in successfully'
+            title: 'Deleted in successfully'
               })
 
             // Swal.fire(
@@ -248,6 +258,7 @@ export default {
       // Object.assign(this.$data, this.$options.data.apply(this));
     },
     addProduct(){
+      this.modal = 'new'
       this.$firestore.products.add(this.product)
       $('#product').modal('hide')
     }
