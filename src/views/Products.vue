@@ -13,8 +13,6 @@
         </div>
       </div>
       <hr />
-
-           
       <div class="product-test">
       <h3 class="d-inline float-left">Product List</h3>
       <button @click="addNew" class="btn btn-primary float-right mb-2">Add Product</button>
@@ -100,7 +98,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="updateProduct" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
+            <button @click="updateProduct(product)" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
             <button @click="addProduct" type="button" class="btn btn-success" v-if="modal == 'new'">Save changes</button>
           </div>
           </div>
@@ -161,16 +159,9 @@ export default {
     },
     addNew(){
         this.modal = 'new'
+        this.reset()
          $('#product').modal('show')
     },
-    // watched(){
-    //    db.collection('products').onSnapshot(res =>{
-    //      this.products=[];
-    //      res.forEach(doc =>{
-    //        this.products.push(doc);
-    //      })
-    //    })
-    // },
     editProduct(product) {
         this.modal = 'edit'
         this.product = product
@@ -180,16 +171,17 @@ export default {
         // this.activeItem = product.id;
     },
     updateProduct(){
-
-      this.$firestore.products.doc(this.product.id).update(this.product)
-        Toast.fire({
+       console.log(this.product['.key'])
+      this.$firestore.products.doc(this.product.id).update(this.product);
+          Toast.fire({
             icon: 'success',
-            title: 'Update in successfully'
-              })
+            title: 'Updated successfully'
+          })
+           $('#product').modal('hide');
         // db.collection('products').doc(this.activeItem).update(this.product)
         // .then(() => 
         // {
-            $('#product').modal('hide');
+            // $('#product').modal('hide');
         //    this.reset();
         //    this.watched()}
         // )
@@ -255,6 +247,13 @@ export default {
       //   });
     },
     reset() {
+      this.product = {
+          name:null,
+          description:null,
+          price:null,
+          tags:[],
+          images:[]
+      }
       // Object.assign(this.$data, this.$options.data.apply(this));
     },
     addProduct(){

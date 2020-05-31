@@ -3,7 +3,8 @@ import App from './App.vue'
 import router from './router'
 import jQuery from 'jquery'
 import {fb} from './firebase'
-import VueFirestore  from 'vue-firestore'
+import VueFirestore from 'vue-firestore'
+
 require('firebase/firestore')
 
 Vue.use(VueFirestore,{
