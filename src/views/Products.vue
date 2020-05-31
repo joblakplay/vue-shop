@@ -82,18 +82,15 @@
               <div class="form-group">
                 <input
                     type="text"
+                    @keyup.188="addTag"
                     placeholder="Product Tag"
                     v-model="product.tag"
                     class="form-control"
                 />
               </div>
               <div class="form-group d-flex">
-                <input
-                    type="text"
-                    placeholder="Product Image"
-                    v-model="product.image"
-                    class="form-control"
-                  />
+                <label for="product_image">Product Images</label>
+                <input type="file" @change="uploadImage" class="form-control">
                  
               </div>
             </div>          
@@ -111,7 +108,7 @@
 </template>
 
 <script>
-import { db } from "../firebase";
+import {fb, db } from "../firebase";
 import { VueEditor } from "vue2-editor";
 const Swal = require('sweetalert2')
 const Toast = Swal.mixin({
@@ -143,11 +140,12 @@ export default {
         name: null,
         price: null,
         description: null,
-        tag: null,
-        image: null
+        tags: [],
+        images: []
       },
       modal:null,
-      activeItem: null
+      activeItem: null,
+      tag: null
     };
   },
   firestore(){
@@ -156,21 +154,39 @@ export default {
     }
   },
   methods: {
-    uploadImage(){
+    addtag(){
 
+    },
+    uploadImage(e){
+      
+      this.product.images.push("sdfasdfasf")
+      console.log(this.product.images[0])
+       if(e.target.files[0]){
+        
+          let file = e.target.files[0];
+    
+          var storageRef = fb.storage().ref('products/'+ Math.random() + '_'  + file.name);
+    
+          let uploadTask  = storageRef.put(file);
+    
+          uploadTask.on('state_changed', (snapshot) => {
+            
+          }, (error) => {
+            // Handle unsuccessful uploads
+          }, () => {
+            // Handle successful uploads on complete
+            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
+            
+            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+              this.product.images.push(downloadURL);
+            });
+          });
+      }
     },
     addNew(){
         this.modal = 'new'
          $('#product').modal('show')
     },
-    // watched(){
-    //    db.collection('products').onSnapshot(res =>{
-    //      this.products=[];
-    //      res.forEach(doc =>{
-    //        this.products.push(doc);
-    //      })
-    //    })
-    // },
     editProduct(product) {
         this.modal = 'edit'
         this.product = product
@@ -180,8 +196,8 @@ export default {
         // this.activeItem = product.id;
     },
     updateProduct(){
-
-      this.$firestore.products.doc(this.product.id).update(this.product)
+        console.log(this.product)
+      //this.$firestore.products.doc(this.product.id).update(this.product)
         Toast.fire({
             icon: 'success',
             title: 'Update in successfully'
