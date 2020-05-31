@@ -13,8 +13,6 @@
         </div>
       </div>
       <hr />
-
-           
       <div class="product-test">
       <h3 class="d-inline float-left">Product List</h3>
       <button @click="addNew" class="btn btn-primary float-right mb-2">Add Product</button>
@@ -97,7 +95,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button @click="updateProduct" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
+            <button @click="updateProduct(product)" type="button" class="btn btn-primary" v-if="modal == 'edit'">Apply changes</button>
             <button @click="addProduct" type="button" class="btn btn-success" v-if="modal == 'new'">Save changes</button>
           </div>
           </div>
@@ -158,7 +156,7 @@ export default {
 
     },
     uploadImage(e){
-      
+     
       this.product.images.push("sdfasdfasf")
       console.log(this.product.images[0])
        if(e.target.files[0]){
@@ -169,22 +167,29 @@ export default {
     
           let uploadTask  = storageRef.put(file);
     
-          uploadTask.on('state_changed', (snapshot) => {
-            
-          }, (error) => {
-            // Handle unsuccessful uploads
-          }, () => {
-            // Handle successful uploads on complete
-            // For instance, get the download URL: https://firebasestorage.googleapis.com/...
-            
-            uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
-              this.product.images.push(downloadURL);
-            });
-          });
+        uploadTask.on('state_changed', function(snapshot){
+  // Observe state change events such as progress, pause, and resume
+  // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+                      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                          console.log('Upload is ' + progress + '% done');
+                   
+                    
+                  }, function(error) {
+                    console.log(error)
+                  }, function() {
+                    uploadTask.snapshot.ref.getDownloadURL().then(function(downloadURL) {
+                        console.log('File available at', downloadURL);
+                        this.product.images.push(downloadURL)
+                      });
+                  });
       }
+      
+      //
+
     },
     addNew(){
         this.modal = 'new'
+        this.reset()
          $('#product').modal('show')
     },
     editProduct(product) {
@@ -196,18 +201,18 @@ export default {
         // this.activeItem = product.id;
     },
     updateProduct(){
-        console.log(this.product)
+            console.log(this.product)
       //this.$firestore.products.doc(this.product.id).update(this.product)
-        Toast.fire({
+            Toast.fire({
             icon: 'success',
-            title: 'Update in successfully'
-              })
+            title: 'Updated successfully'
+          })
+           $('#product').modal('hide');
         // db.collection('products').doc(this.activeItem).update(this.product)
         // .then(() => 
         // {
-            $('#product').modal('hide');
+            // $('#product').modal('hide');
         //    this.reset();
-        //    this.watched()}
         // )
         // .catch()
     },
@@ -271,6 +276,13 @@ export default {
       //   });
     },
     reset() {
+      this.product = {
+          name:null,
+          description:null,
+          price:null,
+          tags:[],
+          images:[]
+      }
       // Object.assign(this.$data, this.$options.data.apply(this));
     },
     addProduct(){
