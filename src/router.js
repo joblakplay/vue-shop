@@ -4,6 +4,7 @@ import Home from './views/Home.vue'
 import Admin from './views/Admin.vue'
 import Overview from "./views/Overview"
 import Products from "./views/Products"
+import Profile from "./views/Profile"
 import {fb} from "./firebase"
 
 Vue.use(Router);
@@ -31,7 +32,15 @@ const router = new Router({
                 path:"products",
                 name:"products",
                 component: Products
-            }]
+            },
+            {
+                path:"profile",
+                name:"profile",
+                component: Profile
+            },
+
+        ]
+
         }
     ]
 });
