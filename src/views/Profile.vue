@@ -64,7 +64,7 @@
 
                         <div class="col-md-4">
                           <div class="form-group">
-                              <input type="submit" @click="updateProfile" value="Save Changes" class="btn btn-primary w-100">
+                              <input type="submit"  value="Save Changes" class="btn btn-primary w-100">
                           </div>
                         </div>
 
@@ -107,7 +107,7 @@
 
                         <div class="col-md-4">
                           <div class="form-group">
-                              <input type="file" @change="uploadImage" class="form-control">
+                              <input type="file" class="form-control">
                            </div>
                         </div>
 
@@ -119,7 +119,7 @@
 
                         <div class="col-md-4">
                           <div class="form-group">
-                              <input type="button" @click="resetPassword" value="Reset password email" class="btn btn-success w-100">
+                              <input type="button"  value="Reset password email" class="btn btn-success w-100">
                           </div>
                         </div>
                       </div>
